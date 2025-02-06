@@ -17,7 +17,7 @@ pip install pymdp numpy matplotlib
 
 ## Usage
 
-### 1️⃣ Define DAU Agents
+### 1 Define DAU Agents
 Modify or add the following code in `dau_active_inference.py` to create agents:
 ```python
 from pymdp.agent import Agent
@@ -40,7 +40,7 @@ dau_agents = {
 }
 ```
 
-### 2️⃣ Compute Expected Free Energy (EFE)
+### 2 Compute Expected Free Energy (EFE)
 Call the EFE computation function after defining agents:
 ```python
 from calculate_efe_dau import compute_efe_for_dau_system
@@ -53,7 +53,7 @@ for agent, efe in efe_results.items():
     print(f"EFE for {agent}: {efe}")
 ```
 
-### 3️⃣ Visualize EFE Values
+### 3 Visualize EFE Values
 Plot EFE values for different agents:
 ```python
 import matplotlib.pyplot as plt
