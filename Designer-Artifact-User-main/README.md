@@ -100,3 +100,4 @@ Currently, only a single argument has been externalized: the `duration`. It woul
 
 - kobus78@gmail.com
 - stefester@gmail.com
+- lupossati@gmail.com
