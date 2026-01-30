@@ -11,7 +11,7 @@ The purpose of the `dau-active-inference` package is to allow a user to run an a
 
 ![](./designer-artifact-user3.png)
 
-After running a simulation, the outcome of the experiment can be visualized as follows, for example, in the case of the Designer/Artifact interaction:
+After running a simulation (based on the case of using a smartphone for shopping), the outcome of the experiment can be visualized as follows, for example, in the case of the Designer/Artifact interaction:
 
 ![](./designer_artifact_interaction.png)
 
