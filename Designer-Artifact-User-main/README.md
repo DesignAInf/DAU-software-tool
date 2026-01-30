@@ -1,6 +1,7 @@
 # **Designer-Artifact-User package**
 Multi-agent active inference with PyMDP
 
+This repository is linked to the book "Design for Entropy" (MIT Press, 2025). See: https://mitpress.mit.edu/9780262056267/design-for-entropy/ 
 This guide gives an overview of the the **Designer-Artifact-User** Python package. It also provides step-by-step instructions to install and set up the package on an Ubuntu 24.04 Linux system. For other operating systems, it should be easy to modify the appropriate commands.
 
 ---
