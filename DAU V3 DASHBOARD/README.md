@@ -4,7 +4,6 @@ An extended Active Inference simulation studying how **Designer and Smartphone s
 
 DAU v3 — Model Description
 
-What it is
 DAU v3 is a computational simulation based on Active Inference that examines how mobile app design choices affect users with different psychological profiles. The model formalizes the relationship among three actors — Designer, Smartphone, and User — as agents that continuously update their beliefs about the world and choose actions that minimize expected surprise.
 
 The three agents
