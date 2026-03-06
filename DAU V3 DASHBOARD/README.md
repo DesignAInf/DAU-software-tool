@@ -1,8 +1,8 @@
 # DAU v3 — Active Inference Persuasive Design Study
 
-An extended Active Inference simulation studying how **Designer and Smartphone strategies differentially manipulate users with different psychological profiles**. Four user archetypes run in parallel under shared environmental conditions, revealing which persuasive techniques are most effective on which profiles.
+An extended Active Inference simulation studying how **Designer and Smartphone strategies differentially manipulate users with different psychological profiles**. Four user archetypes run in parallel under shared environmental conditions, revealing which persuasive techniques are most effective on which profiles. Built on the same numpy-only Active Inference core as DAU v2, extended to 10 hidden states per agent, richer observation spaces, and a full statistical analysis pipeline.
 
-DAU v3 — Model Description
+**DAU v3 — Model Description**
 
 DAU v3 is a computational simulation based on Active Inference that examines how mobile app design choices affect users with different psychological profiles. The model formalizes the relationship among three actors — Designer, Smartphone, and User — as agents that continuously update their beliefs about the world and choose actions that minimize expected surprise.
 
@@ -29,8 +29,6 @@ In the statistical analysis across N seeds, the aggregate metrics are: churn rat
 
 **Why it is scientifically interesting**
 The model makes it possible to test hypotheses about the selectivity of manipulation: the same Smartphone strategy does not have the same effect on all users. A high γ for the Smartphone (high precision, aggressive KPI-driven behavior) may accelerate dependency in the Anxious profile while also accelerating resistance in the Resistant profile — producing a boomerang effect in which aggressiveness generates churn rather than retention.
-
-Built on the same numpy-only Active Inference core as DAU v2, extended to 10 hidden states per agent, richer observation spaces, and a full statistical analysis pipeline.
 
 ---
 
