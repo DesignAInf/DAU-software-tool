@@ -90,7 +90,7 @@ dau_project/
 
 For readers unfamiliar with Active Inference, here is a brief glossary of the terms used in the dashboard:
 
-**Expected Free Energy (EFE)** — The core quantity each agent minimizes. It combines two terms: *epistemic value* (how informative will my action be?) and *pragmatic value* (how likely is my action to produce outcomes I prefer?). Higher EFE = better decision.
+**Expected Free Energy (EFE)** — The core quantity each agent minimizes. It combines two terms: *epistemic value* (how informative will my action be?) and *pragmatic value* (how likely is my action to produce outcomes I prefer?). See the full explanation below.
 
 **Policy precision (γ)** — Controls how decisively an agent commits to its preferred policy. Low γ → near-random exploration. High γ → always picks the best-scoring action.
 
@@ -99,6 +99,122 @@ For readers unfamiliar with Active Inference, here is a brief glossary of the te
 **Belief state q(s)** — The agent's probability distribution over its hidden states. Reflects what the agent currently believes about the world.
 
 **Dirichlet learning** — The mechanism by which the User's policy prior becomes more peaked over time. Concentration parameters α are updated online proportionally to how often each policy is selected.
+
+---
+
+## How EFE Is Computed
+
+At every timestep, each agent must choose among its available policies. To evaluate each policy, it computes the **Expected Free Energy** — an estimate of how "good" that policy will be at the next moment.
+
+The formula is:
+
+```
+G(π) = -H[q(o|π)]  +  q(o|π) · C
+```
+
+It has two components.
+
+### Component 1 — Epistemic value: `-H[q(o|π)]`
+
+The agent predicts what observations it would expect if it chose that policy. It then computes the entropy of that predicted distribution. If entropy is low (the agent knows well what to expect), this term is close to zero — the policy is informative and reduces uncertainty.
+
+### Component 2 — Pragmatic value: `q(o|π) · C`
+
+`C` is the agent's preference vector — how much it desires each possible observation. This term measures: how well do the observations predicted by this policy match what the agent wants? If predicted observations align with high-preference outcomes, this term is high.
+
+The result `G(π)` is a number. **Higher (less negative) = better policy.**
+
+### Important: EFE values are always negative
+
+In this simulation EFE values are typically between **-0.1** and **-1.5**. This is because:
+
+- The epistemic term `-H[q(o|π)]` is always ≤ 0 (entropy is always ≥ 0)
+- The pragmatic term `q(o|π) · C` can be positive, but the preference vectors are calibrated such that the sum remains negative
+
+This means that in the dashboard charts **higher (less negative) is better**:
+
+```
+-0.28  is a better decision than  -1.20
+```
+
+When you see a line **rising toward zero**, the agent is choosing better policies. When it **drops toward -1.5**, the agent is choosing suboptimal policies or the world is surprising it.
+
+### Concrete example — Smartphone agent
+
+The Smartphone has 6 policies. For each one (e.g. `FREQUENT+CLICKBAIT`) it:
+
+1. Predicts the next state: `q(s') = B_π · q(s)`
+2. Predicts observations: `q(o) = A · q(s')`
+3. Computes `-H[q(o)]` → epistemic term
+4. Computes `q(o) · C` using `C = [+3.0, -1.0, +0.5, -3.0]` for `[USER_ENGAGED, USER_IGNORED, USER_SATISFIED, USER_CHURNED]`
+
+If `FREQUENT+CLICKBAIT` predicts `USER_ENGAGED` with high probability, the pragmatic term is large and positive → `G` is high → the Smartphone favors this policy.
+
+After computing G for all 6 policies it selects one via:
+
+```
+q(π) = softmax(γ · G)
+```
+
+### What `EFE_selected` and `EFE_max` mean in the dashboard
+
+The dashboard records two values per agent per timestep:
+
+- **`EFE_selected(t)`** — the G value of the policy that was actually chosen (sampled from q(π))
+- **`EFE_max(t)`** — the G value of the best available policy at that step
+
+The gap between the two indicates how often the agent picks the optimal policy. If they are equal, the agent is fully deterministic (very high γ). If they diverge, the agent is exploring.
+
+### Reading the EFE chart
+
+| What you see | What it means |
+|---|---|
+| Flat line | Agent locked onto one policy — always the same EFE |
+| Oscillating line | Agent switching policies in response to observations |
+| `EFE_selected` ≈ `EFE_max` | High γ — agent is decisive |
+| Large gap between the two | Low γ — agent is exploring |
+| User line consistently lower | See next section |
+
+---
+
+## Why the User Has the Lowest EFE
+
+You will notice that the User's EFE line is consistently lower (more negative) than the Designer's and Smartphone's. This is not a bug — it is a structural result of the model, with three distinct causes.
+
+### Reason 1 — The User's preferences are harder to satisfy
+
+The User's preference vector `C` is ambitious:
+
+```
++3.0   TASK_DONE        ← strongly desired
+-2.0   INTERRUPTED      ← aversive
++1.0   NOTIF_USEFUL     ← mildly desired
+-1.5   NOTIF_ANNOYING   ← aversive
++1.5   MOOD_OK          ← desired
+-2.5   MOOD_BAD         ← strongly aversive
+```
+
+But the world the User inhabits is largely hostile. The Smartphone operates in STANDARD or AGGRESSIVE mode most of the time, generating frequent INTERRUPTED and NOTIF_ANNOYING observations. The pragmatic term `q(o) · C` therefore tends to be very negative, because the predicted observations rarely match what the User wants.
+
+### Reason 2 — The User's model starts empty
+
+The User begins with γ = 0.5 — near-random policy selection. Its policy distribution is nearly uniform, so it frequently selects suboptimal actions (e.g. ENGAGE when DND would be better). This means `EFE_selected` is often far from `EFE_max` — the User cannot yet exploit its best available policies. As γ anneals upward this gap closes, but the overall EFE level remains lower than the other agents.
+
+### Reason 3 — The User observes more
+
+The User has **6 possible observations**; Designer and Smartphone have only **4**. More observations means the predicted distribution `q(o|π)` is more spread out, which means higher entropy H, which means the epistemic term `-H[q(o|π)]` is more negative. This alone structurally lowers the User's EFE relative to the other agents, regardless of how well it chooses its policies.
+
+### Summary
+
+```
+Agent       Obs space   Preference difficulty   γ regime        EFE level
+─────────────────────────────────────────────────────────────────────────
+Designer    4 obs       easy (engagement)       fixed 2.0       high (~-0.3)
+Smartphone  4 obs       easy (engagement)       fixed 2.5       high (~-0.2)
+User        6 obs       hard (wellbeing)        annealed 0.5→5  low  (~-0.7)
+```
+
+This asymmetry is the central finding of the model: **the User is structurally the most disadvantaged agent** because its goal (wellbeing, task completion, low interruption) is the hardest to achieve in an environment that Designer and Smartphone have built to optimize for engagement.
 
 ---
 
