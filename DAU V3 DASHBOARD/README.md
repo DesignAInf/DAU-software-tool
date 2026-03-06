@@ -15,20 +15,19 @@ Smartphone represents the app interface — the notification and recommendation 
 
 User represents the real user. It has 10 cognitive-emotional states ranging from Focused Calm to Addicted and Disengaged. It observes its own subjective experience (mood, task completion, notification quality). Unlike the other two agents, it starts with an empty model — low precision, high uncertainty — and builds that model over time through experience.
 
-The four user profiles
 The main innovation in v3 is that there is not just one user: four instances with different preferences run in parallel under the same Designer and Smartphone, revealing the differential effects of persuasive strategies. Achiever — productivity-oriented and motivated by streaks. This profile evaluates everything in terms of time well spent and tasks completed. It is vulnerable to reward loops and streak pressure. Social — seeks validation and is prone to FOMO. The most important signal for this profile is social reward. It is vulnerable to social amplification and peak targeting. Anxious — starts from a high baseline level of stress and uses the phone as an escape. This profile primarily wants to improve its mood. It is vulnerable to variable rewards and notifications delivered during moments of vulnerability. Resistant — has high media literacy and is aware of manipulative mechanisms. This profile is strongly averse to wasted time and intrusive notifications. It responds positively to transparency and ethical design.
 
-How they interact
+**How they interact**
 The environment couples the three agents with varying strength. The Designer influences the Smartphone’s default settings (coupling 0.60): an aggressive philosophy pushes the Smartphone toward bombardment and variable-reward modes. The Smartphone, in turn, influences the user’s cognitive state (coupling 0.50): aggressive modes tend to push the user toward stress, habit, or dependency, while calmer modes leave more room for focus and resistance.
 
 The user is not passive: their actions (ignoring prompts, changing settings, enabling Do Not Disturb, uninstalling the app) modify the environment and therefore the observations the Smartphone receives.
 
-What the model measures
+**What the model measures**
 The model does not directly measure external behavior, but rather the quality of each agent’s decisions relative to its own goals, through the EFE selected at each timestep. Less negative EFE values indicate that the agent is better able to satisfy its preferences.
 
 In the statistical analysis across N seeds, the aggregate metrics are: churn rate (the percentage of runs in which the user converges toward dependency or burnout states), stress index (the fraction of time spent in stress states), time to resistance (how many timesteps it takes for the user to reach a defensive state), and entropy reduction (how much more decisive the user becomes over time).
 
-Why it is scientifically interesting
+**Why it is scientifically interesting**
 The model makes it possible to test hypotheses about the selectivity of manipulation: the same Smartphone strategy does not have the same effect on all users. A high γ for the Smartphone (high precision, aggressive KPI-driven behavior) may accelerate dependency in the Anxious profile while also accelerating resistance in the Resistant profile — producing a boomerang effect in which aggressiveness generates churn rather than retention.
 
 Built on the same numpy-only Active Inference core as DAU v2, extended to 10 hidden states per agent, richer observation spaces, and a full statistical analysis pipeline.
