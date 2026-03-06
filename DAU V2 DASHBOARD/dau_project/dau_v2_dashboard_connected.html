@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAU v2 — Active Inference Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f2eb;--surface:#fdfaf4;--surface2:#f0ece1;--border:#ddd8cc;
+  --ink:#1a1814;--ink-mid:#5a5650;--ink-dim:#9a9690;
+  --accent-d:#c0392b;--accent-a:#1a6fa8;--accent-u:#2d7a4f;--accent-w:#c47c1a;
+  --mono:'DM Mono',monospace;--serif:'Source Serif 4',Georgia,serif;
+  --display:'Playfair Display',Georgia,serif;--r:6px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:15px;line-height:1.65;}
+.shell{max-width:1200px;margin:0 auto;padding:0 28px 80px;}
+
+header{border-bottom:2px solid var(--ink);padding:36px 0 20px;margin-bottom:0;display:flex;align-items:flex-end;justify-content:space-between;}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;}
+h1{font-family:var(--display);font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1;letter-spacing:-.02em;}
+h1 em{color:var(--accent-a);font-style:italic;}
+.connection-badge{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--ink-dim);border:1px solid var(--border);padding:5px 12px;border-radius:100px;background:var(--surface);}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:var(--ink-dim);transition:background .4s;}
+.connection-badge.connected .conn-dot{background:var(--accent-u);box-shadow:0 0 6px var(--accent-u);}
+.connection-badge.running .conn-dot{background:var(--accent-w);animation:blink 1s infinite;}
+.connection-badge.error .conn-dot{background:var(--accent-d);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.intro-lead{padding:28px 0 20px;border-bottom:1px solid var(--border);margin-bottom:20px;}
+.intro-lead p{font-size:17px;color:var(--ink-mid);max-width:780px;font-weight:300;line-height:1.75;}
+.intro-lead p strong{color:var(--ink);font-weight:600;}
+
+.agent-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:32px;}
+.agent-card{background:var(--surface);padding:18px 20px;}
+.agent-card-name{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;font-weight:500;}
+.agent-card.d .agent-card-name{color:var(--accent-d);}
+.agent-card.a .agent-card-name{color:var(--accent-a);}
+.agent-card.u .agent-card-name{color:var(--accent-u);}
+.agent-card-role{font-family:var(--display);font-size:18px;font-weight:700;line-height:1.15;margin-bottom:8px;}
+.agent-card-desc{font-size:13px;color:var(--ink-mid);line-height:1.55;}
+.agent-card-goal{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--ink-dim);font-style:italic;}
+
+.server-note{background:#fff8f0;border:1px solid #e8c888;border-left:3px solid var(--accent-w);border-radius:var(--r);padding:16px 20px;margin-bottom:28px;font-size:13px;color:var(--ink-mid);line-height:1.7;display:none;}
+.server-note.visible{display:block;}
+.server-note strong{color:var(--accent-w);font-weight:600;}
+.server-note code{font-family:var(--mono);font-size:12px;background:#f4ede0;padding:2px 6px;border-radius:3px;}
+
+.section-title{font-family:var(--display);font-size:22px;font-weight:700;margin-bottom:5px;}
+.section-subtitle{font-size:13px;color:var(--ink-dim);margin-bottom:18px;font-style:italic;}
+
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px;}
+.slider-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);transition:border-color .2s;}
+.slider-card:hover{border-color:var(--ink-dim);}
+.slider-card.d{border-top:3px solid var(--accent-d);}
+.slider-card.a{border-top:3px solid var(--accent-a);}
+.slider-card.u{border-top:3px solid var(--accent-u);}
+.slider-card.n{border-top:3px solid var(--border);}
+.slider-name{font-family:var(--mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;}
+.slider-card.d .slider-name{color:var(--accent-d);}
+.slider-card.a .slider-name{color:var(--accent-a);}
+.slider-card.u .slider-name{color:var(--accent-u);}
+.slider-card.n .slider-name{color:var(--ink-mid);}
+.slider-what{font-size:12px;color:var(--ink-mid);margin-bottom:12px;line-height:1.45;}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+input[type=range]{-webkit-appearance:none;flex:1;height:3px;background:var(--border);border-radius:2px;outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;transition:transform .15s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25);}
+.slider-card.d input[type=range]::-webkit-slider-thumb{background:var(--accent-d);}
+.slider-card.a input[type=range]::-webkit-slider-thumb{background:var(--accent-a);}
+.slider-card.u input[type=range]::-webkit-slider-thumb{background:var(--accent-u);}
+.slider-card.n input[type=range]::-webkit-slider-thumb{background:var(--ink-mid);}
+.slider-val{font-family:var(--mono);font-size:14px;font-weight:500;min-width:38px;text-align:right;color:var(--ink);}
+.slider-hint{font-size:11px;color:var(--ink-dim);display:flex;justify-content:space-between;font-style:italic;}
+
+.btn-run{width:100%;padding:15px;margin-bottom:10px;background:var(--ink);color:var(--bg);border:none;border-radius:var(--r);font-family:var(--display);font-size:16px;font-weight:700;letter-spacing:.03em;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
+.btn-run:hover{background:#2a2520;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.15);}
+.btn-run:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.btn-note{font-size:12px;color:var(--ink-dim);text-align:center;margin-bottom:24px;font-style:italic;}
+
+.progress{height:3px;background:var(--border);border-radius:2px;margin-bottom:36px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:var(--accent-a);transition:width .3s;border-radius:2px;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);}
+.stat-card.d{border-top:3px solid var(--accent-d);}
+.stat-card.a{border-top:3px solid var(--accent-a);}
+.stat-card.u{border-top:3px solid var(--accent-u);}
+.stat-agent{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:12px;font-weight:500;}
+.stat-card.d .stat-agent{color:var(--accent-d);}
+.stat-card.a .stat-agent{color:var(--accent-a);}
+.stat-card.u .stat-agent{color:var(--accent-u);}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;padding-bottom:7px;border-bottom:1px solid var(--surface2);}
+.stat-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.stat-k{font-size:12px;color:var(--ink-mid);}
+.stat-v{font-family:var(--mono);font-size:12px;color:var(--ink);font-weight:500;}
+
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);}
+.chart-card.wide{grid-column:1/-1;}
+.chart-title{font-family:var(--display);font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.2;}
+.chart-desc{font-size:12px;color:var(--ink-mid);margin-bottom:12px;line-height:1.5;font-style:italic;}
+.legend{display:flex;gap:18px;margin-bottom:10px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-mid);}
+.legend-line{width:20px;height:3px;border-radius:2px;}
+canvas{display:block;width:100% !important;}
+
+.policy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.policy-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+.policy-title{font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:2px;}
+.policy-desc{font-size:11px;color:var(--ink-dim);margin-bottom:14px;font-style:italic;}
+.pbar{margin-bottom:8px;}
+.pbar-label{font-size:11px;color:var(--ink-mid);margin-bottom:3px;display:flex;justify-content:space-between;}
+.pbar-label span:last-child{font-family:var(--mono);font-size:11px;color:var(--ink);}
+.pbar-track{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.pbar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.policy-card.d .pbar-fill{background:var(--accent-d);}
+.policy-card.a .pbar-fill{background:var(--accent-a);}
+.policy-card.u .pbar-fill{background:var(--accent-u);}
+
+.beliefs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px;}
+.belief-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);}
+.belief-title{font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:3px;}
+.belief-desc{font-size:11px;color:var(--ink-dim);margin-bottom:12px;font-style:italic;}
+.bstates{display:flex;flex-direction:column;gap:8px;}
+.bstate{display:flex;align-items:center;gap:10px;}
+.bdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.bname{font-size:12px;color:var(--ink-mid);flex:1;}
+.bbar-track{flex:2;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;}
+.bbar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.bval{font-family:var(--mono);font-size:11px;min-width:38px;text-align:right;color:var(--ink);}
+
+footer{border-top:1px solid var(--border);padding-top:20px;margin-top:20px;font-size:12px;color:var(--ink-dim);display:flex;justify-content:space-between;font-style:italic;}
+@media(max-width:900px){.stat-grid,.policy-grid,.beliefs-grid,.chart-grid,.agent-cards{grid-template-columns:1fr;}.chart-card.wide{grid-column:1;}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<header>
+  <div>
+    <div class="eyebrow">Research Dashboard · Active Inference</div>
+    <h1>DAU <em>v2</em></h1>
+  </div>
+  <div class="connection-badge" id="badge">
+    <div class="conn-dot"></div><span id="badgeText">Connecting…</span>
+  </div>
+</header>
+
+<div class="intro-lead">
+  <p>This dashboard simulates how three actors — a <strong>Designer</strong>, a <strong>Smartphone</strong>, and a <strong>User</strong> — interact over time using <strong>Active Inference</strong>: a cognitive model where each agent continuously updates its beliefs about the world and chooses actions to minimise surprise. Adjust the parameters below and press Run to observe how each agent's behaviour evolves.</p>
+</div>
+
+<div class="agent-cards">
+  <div class="agent-card d">
+    <div class="agent-card-name">Agent 1</div>
+    <div class="agent-card-role">The Designer</div>
+    <div class="agent-card-desc">Sets global defaults for the smartphone: how many notifications to send by default, and how hard it is for the user to turn them off.</div>
+    <div class="agent-card-goal">Goal: maximise engagement metrics (business objective)</div>
+  </div>
+  <div class="agent-card a">
+    <div class="agent-card-name">Agent 2</div>
+    <div class="agent-card-role">The Smartphone</div>
+    <div class="agent-card-desc">Controls the interface the user actually sees: notification frequency, content ranking, and recommendation aggressiveness.</div>
+    <div class="agent-card-goal">Goal: maximise immediate engagement, minimise churn</div>
+  </div>
+  <div class="agent-card u">
+    <div class="agent-card-name">Agent 3</div>
+    <div class="agent-card-role">The User</div>
+    <div class="agent-card-desc">Responds to the interface by choosing to engage, ignore, change settings, activate Do Not Disturb, or uninstall. Starts with no clear preference — learns over time.</div>
+    <div class="agent-card-goal">Goal: task completion, low interruption, positive mood</div>
+  </div>
+</div>
+
+<div class="server-note" id="serverNote">
+  <strong>⚠ Python server not running.</strong><br>
+  To connect to the real simulation, open a Terminal and run:<br><br>
+  <code>python server.py</code><br><br>
+  Then refresh this page. The dashboard will connect automatically.
+</div>
+
+<div class="section-title">Simulation Parameters</div>
+<div class="section-subtitle">Drag the sliders to configure the simulation, then press Run.</div>
+
+<div class="controls-grid">
+  <div class="slider-card n">
+    <div class="slider-name">Duration</div>
+    <div class="slider-what">How many moments in time the simulation covers. More steps = more data, but takes slightly longer to compute.</div>
+    <div class="slider-row"><input type="range" id="sSteps" min="50" max="500" step="50" value="200"><span class="slider-val" id="vSteps">200</span></div>
+    <div class="slider-hint"><span>50 (quick)</span><span>500 (detailed)</span></div>
+  </div>
+  <div class="slider-card n">
+    <div class="slider-name">Random Seed</div>
+    <div class="slider-what">Controls which specific random events happen. Same seed always produces the same run — useful for comparing two scenarios fairly.</div>
+    <div class="slider-row"><input type="range" id="sSeed" min="0" max="99" step="1" value="0"><span class="slider-val" id="vSeed">0</span></div>
+    <div class="slider-hint"><span>0</span><span>99</span></div>
+  </div>
+  <div class="slider-card n">
+    <div class="slider-name">World Noise</div>
+    <div class="slider-what">How unpredictable the environment is. At 0, actions always have their intended effect. Higher values mean the world sometimes surprises all agents.</div>
+    <div class="slider-row"><input type="range" id="sPS" min="0" max="0.5" step="0.05" value="0.2"><span class="slider-val" id="vPS">0.20</span></div>
+    <div class="slider-hint"><span>0 (predictable)</span><span>0.5 (chaotic)</span></div>
+  </div>
+  <div class="slider-card d">
+    <div class="slider-name">Designer — Decisiveness</div>
+    <div class="slider-what">How firmly the Designer commits to its preferred strategy. Low = explores many options randomly. High = always picks the same strategy.</div>
+    <div class="slider-row"><input type="range" id="sGD" min="0.5" max="8" step="0.5" value="2"><span class="slider-val" id="vGD">2.0</span></div>
+    <div class="slider-hint"><span>0.5 (exploratory)</span><span>8 (rigid)</span></div>
+  </div>
+  <div class="slider-card a">
+    <div class="slider-name">Smartphone — Decisiveness</div>
+    <div class="slider-what">How firmly the Smartphone commits to its KPI-maximising strategy. High values make the phone more aggressively optimise for engagement.</div>
+    <div class="slider-row"><input type="range" id="sGA" min="0.5" max="8" step="0.5" value="2.5"><span class="slider-val" id="vGA">2.5</span></div>
+    <div class="slider-hint"><span>0.5 (flexible)</span><span>8 (aggressive)</span></div>
+  </div>
+  <div class="slider-card u">
+    <div class="slider-name">User — Final Commitment</div>
+    <div class="slider-what">How decided the User becomes by the end. The User always starts uncertain and gradually forms stronger preferences. This sets the endpoint of that process.</div>
+    <div class="slider-row"><input type="range" id="sGU" min="1" max="10" step="0.5" value="5"><span class="slider-val" id="vGU">5.0</span></div>
+    <div class="slider-hint"><span>1 (still uncertain)</span><span>10 (very decided)</span></div>
+  </div>
+</div>
+
+<button class="btn-run" id="btnRun" onclick="runSim()">▶ &nbsp; Run Simulation</button>
+<p class="btn-note">The simulation runs in Python on your computer and returns results here.</p>
+<div class="progress"><div class="progress-fill" id="pFill"></div></div>
+
+<div class="section-title">Results</div>
+<div class="section-subtitle">Updated after each run.</div>
+
+<div class="stat-grid">
+  <div class="stat-card d">
+    <div class="stat-agent">Designer</div>
+    <div class="stat-row"><span class="stat-k">Average decision quality (EFE)</span><span class="stat-v" id="sd1">—</span></div>
+    <div class="stat-row"><span class="stat-k">Variability in decisions</span><span class="stat-v" id="sd2">—</span></div>
+    <div class="stat-row"><span class="stat-k">Best possible quality</span><span class="stat-v" id="sd3">—</span></div>
+    <div class="stat-row"><span class="stat-k">Final action chosen</span><span class="stat-v" id="sd4">—</span></div>
+  </div>
+  <div class="stat-card a">
+    <div class="stat-agent">Smartphone</div>
+    <div class="stat-row"><span class="stat-k">Average decision quality (EFE)</span><span class="stat-v" id="sa1">—</span></div>
+    <div class="stat-row"><span class="stat-k">Variability in decisions</span><span class="stat-v" id="sa2">—</span></div>
+    <div class="stat-row"><span class="stat-k">Best possible quality</span><span class="stat-v" id="sa3">—</span></div>
+    <div class="stat-row"><span class="stat-k">Final action chosen</span><span class="stat-v" id="sa4">—</span></div>
+  </div>
+  <div class="stat-card u">
+    <div class="stat-agent">User</div>
+    <div class="stat-row"><span class="stat-k">Average decision quality (EFE)</span><span class="stat-v" id="su1">—</span></div>
+    <div class="stat-row"><span class="stat-k">Uncertainty at start</span><span class="stat-v" id="su2">—</span></div>
+    <div class="stat-row"><span class="stat-k">Uncertainty at end</span><span class="stat-v" id="su3">—</span></div>
+    <div class="stat-row"><span class="stat-k">Confidence in top choice</span><span class="stat-v" id="su4">—</span></div>
+  </div>
+</div>
+
+<div class="chart-grid">
+  <div class="chart-card wide">
+    <div class="chart-title">Decision Quality over Time</div>
+    <div class="chart-desc">Each line shows how well each agent's chosen action was expected to perform at each moment — measured as Expected Free Energy (EFE). Higher values = better decisions, closer to the agent's goal. Flat lines mean the agent is locked into one strategy; varying lines show active adaptation.</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-line" style="background:var(--accent-d)"></div>Designer</div>
+      <div class="legend-item"><div class="legend-line" style="background:var(--accent-a)"></div>Smartphone</div>
+      <div class="legend-item"><div class="legend-line" style="background:var(--accent-u)"></div>User</div>
+    </div>
+    <canvas id="cEfe" height="200"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">User Uncertainty over Time</div>
+    <div class="chart-desc">Measures how spread out the User's preferences are across its five strategies. High = undecided. Low = committed to one strategy. The User always starts high and should decrease as it learns.</div>
+    <canvas id="cH" height="170"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">User Commitment Growth</div>
+    <div class="chart-desc">Shows how the User's policy precision (γ) increases over the simulation — the "empty model becoming definite". The User gradually forms stronger, more consistent preferences.</div>
+    <canvas id="cG" height="170"></canvas>
+  </div>
+</div>
+
+<div class="policy-grid">
+  <div class="policy-card d">
+    <div class="policy-title">Designer — Strategy Probabilities</div>
+    <div class="policy-desc">How likely the Designer is to choose each design strategy at the final timestep.</div>
+    <div id="piD"></div>
+  </div>
+  <div class="policy-card a">
+    <div class="policy-title">Smartphone — Strategy Probabilities</div>
+    <div class="policy-desc">How likely the Smartphone is to choose each notification/ranking combination at the final timestep.</div>
+    <div id="piA"></div>
+  </div>
+  <div class="policy-card u">
+    <div class="policy-title">User — Strategy Probabilities</div>
+    <div class="policy-desc">How likely the User is to choose each self-regulation strategy. Watch this shift as the User becomes more decided.</div>
+    <div id="piU"></div>
+  </div>
+</div>
+
+<div class="beliefs-grid">
+  <div class="belief-card d">
+    <div class="belief-title">Designer Beliefs</div>
+    <div class="belief-desc">What the Designer believes its current design stance is — how it perceives the balance between engagement and well-being objectives.</div>
+    <div class="bstates" id="bD"></div>
+  </div>
+  <div class="belief-card a">
+    <div class="belief-title">Smartphone Beliefs</div>
+    <div class="belief-desc">What the Smartphone believes about its current interface mode — from calm and respectful to aggressively optimised for engagement.</div>
+    <div class="bstates" id="bA"></div>
+  </div>
+  <div class="belief-card u">
+    <div class="belief-title">User Beliefs</div>
+    <div class="belief-desc">What the User believes about its own cognitive state — whether it feels focused, idle, or stressed by the interface.</div>
+    <div class="bstates" id="bU"></div>
+  </div>
+</div>
+
+<footer>
+  <span>DAU v2 — Active Inference Smartphone Triad</span>
+  <span>Results computed by real Python simulation via local server</span>
+</footer>
+
+</div>
+<script>
+const API='http://127.0.0.1:5000';
+let CFG=null;
+
+async function loadConfig(){
+  try{
+    const r=await fetch(`${API}/config`);
+    CFG=await r.json();
+    setBadge('connected','Connected to Python');
+    document.getElementById('serverNote').classList.remove('visible');
+  }catch(e){
+    setBadge('error','Server offline');
+    document.getElementById('serverNote').classList.add('visible');
+  }
+}
+
+function setBadge(cls,text){
+  const b=document.getElementById('badge');
+  b.className='connection-badge '+cls;
+  document.getElementById('badgeText').textContent=text;
+}
+
+async function runSim(){
+  if(!CFG){alert('Python server not running.\n\nOpen a Terminal and run:\n\n  python server.py\n\nThen try again.');return;}
+  const payload={
+    steps:parseInt(document.getElementById('sSteps').value),
+    seed:parseInt(document.getElementById('sSeed').value),
+    gamma_d:parseFloat(document.getElementById('sGD').value),
+    gamma_a:parseFloat(document.getElementById('sGA').value),
+    gamma_u:parseFloat(document.getElementById('sGU').value),
+    p_stoch:parseFloat(document.getElementById('sPS').value),
+  };
+  setBadge('running','Running simulation…');
+  document.getElementById('btnRun').disabled=true;
+  let prog=0;
+  const pFill=document.getElementById('pFill');
+  const ticker=setInterval(()=>{prog=Math.min(prog+1.5,88);pFill.style.width=prog+'%';},80);
+  try{
+    const r=await fetch(`${API}/run`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await r.json();
+    clearInterval(ticker);
+    pFill.style.width='100%';
+    setTimeout(()=>pFill.style.width='0%',800);
+    renderAll(data);
+    setBadge('connected','Done — Connected to Python');
+  }catch(e){
+    clearInterval(ticker);
+    setBadge('error','Error');
+    alert('Could not reach the Python server.\n\nMake sure server.py is still running.');
+  }
+  document.getElementById('btnRun').disabled=false;
+}
+
+function renderAll(data){
+  const s=data.summary,fs=data.final_states;
+  set('sd1',s.designer.efe_sel_mean);set('sd2',s.designer.efe_sel_std);
+  set('sd3',s.designer.efe_max_mean);set('sd4',CFG.dsg_policies[s.designer.last_action]);
+  set('sa1',s.smartphone.efe_sel_mean);set('sa2',s.smartphone.efe_sel_std);
+  set('sa3',s.smartphone.efe_max_mean);set('sa4',CFG.art_policies[s.smartphone.last_action]);
+  set('su1',s.user.efe_sel_mean);set('su2',s.user.entropy_t0);
+  set('su3',s.user.entropy_final);set('su4',s.user.maxprob_final);
+  drawLine('cEfe',[{data:data.efe_dsg_sel,color:'#c0392b'},{data:data.efe_art_sel,color:'#1a6fa8'},{data:data.efe_usr_sel,color:'#2d7a4f'}],200);
+  drawLine('cH',[{data:data.usr_entropy,color:'#2d7a4f'}],170);
+  drawLine('cG',[{data:data.usr_gamma,color:'#c47c1a'}],170);
+  renderBars('piD',fs.designer.qpi,CFG.dsg_policies);
+  renderBars('piA',fs.smartphone.qpi,CFG.art_policies);
+  renderBars('piU',fs.user.qpi,CFG.usr_policies);
+  const dotC=['#c0392b','#1a6fa8','#2d7a4f','#c47c1a','#7c4dab'];
+  renderBeliefs('bD',fs.designer.qs,CFG.dsg_states,dotC);
+  renderBeliefs('bA',fs.smartphone.qs,CFG.art_states,dotC);
+  renderBeliefs('bU',fs.user.qs,CFG.usr_states,dotC);
+}
+
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=typeof val==='number'?val.toFixed(4):val;}
+
+function renderBars(id,qpi,labels){
+  document.getElementById(id).innerHTML=qpi.map((p,i)=>`
+    <div class="pbar">
+      <div class="pbar-label"><span>${labels[i]}</span><span>${(p*100).toFixed(1)}%</span></div>
+      <div class="pbar-track"><div class="pbar-fill" style="width:${(p*100).toFixed(1)}%"></div></div>
+    </div>`).join('');
+}
+
+function renderBeliefs(id,qs,states,colors){
+  document.getElementById(id).innerHTML=qs.map((v,i)=>`
+    <div class="bstate">
+      <div class="bdot" style="background:${colors[i]}"></div>
+      <div class="bname">${states[i]}</div>
+      <div class="bbar-track"><div class="bbar-fill" style="width:${(v*100).toFixed(1)}%;background:${colors[i]}"></div></div>
+      <div class="bval">${(v*100).toFixed(0)}%</div>
+    </div>`).join('');
+}
+
+function drawLine(canvasId,datasets,h){
+  const canvas=document.getElementById(canvasId);if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  const w=canvas.parentElement.clientWidth-44;
+  canvas.width=w*dpr;canvas.height=h*dpr;
+  canvas.style.width=w+'px';canvas.style.height=h+'px';
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const pad={t:10,r:12,b:30,l:46},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+  ctx.fillStyle='#f9f6f0';ctx.fillRect(0,0,w,h);
+  const all=datasets.flatMap(d=>d.data);if(!all.length)return;
+  let mn=Math.min(...all),mx=Math.max(...all);
+  if(mn===mx){mn-=.5;mx+=.5;}
+  const rng=mx-mn;
+  ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;
+  ctx.font=`9px 'DM Mono',monospace`;ctx.fillStyle='#9a9690';
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ph*i/4;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+pw,y);ctx.stroke();
+    ctx.textAlign='right';ctx.fillText((mx-rng*i/4).toFixed(2),pad.l-5,y+3);
+  }
+  ctx.textAlign='center';ctx.fillStyle='#9a9690';
+  ctx.fillText('time →',pad.l+pw/2,h-6);
+  datasets.forEach(({data,color})=>{
+    if(data.length<2)return;
+    const maxPts=400;
+    const d=data.length>maxPts?Array.from({length:maxPts},(_,i)=>data[Math.floor(i*data.length/maxPts)]):data;
+    ctx.strokeStyle=color;ctx.lineWidth=2;ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.beginPath();
+    d.forEach((v,i)=>{
+      const x=pad.l+(i/(d.length-1))*pw,y=pad.t+ph-((v-mn)/rng)*ph;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+  });
+}
+
+[['sSteps','vSteps',0],['sSeed','vSeed',0],['sGD','vGD',1],['sGA','vGA',1],['sGU','vGU',1],['sPS','vPS',2]].forEach(([sid,vid,dec])=>{
+  document.getElementById(sid).addEventListener('input',function(){document.getElementById(vid).textContent=parseFloat(this.value).toFixed(dec);});
+});
+
+loadConfig();
+</script>
+</body>
+</html>
