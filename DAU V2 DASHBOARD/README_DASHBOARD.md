@@ -1,6 +1,6 @@
 # DAU v2 — Active Inference Dashboard
 
-An interactive research dashboard for simulating and visualizing the behavior of three Active Inference agents — **Designer**, **Smartphone**, and **User** — in a smartphone interaction scenario. Built with a Python/Flask backend running the real simulation engine and a browser-based frontend for real-time visualization.
+An interactive research dashboard for simulating and visualizing the behavior of three Active Inference agents — **Designer**, **Smartphone**, and **User** — in a smartphone interaction scenario. Built with a Python/Flask backend running the real simulation engine and a browser-based frontend for real-time visualization. The question the model asks is: if three agents with these goals interact according to the principles of Active Inference, what patterns of behavior emerge?
 
 ---
 
