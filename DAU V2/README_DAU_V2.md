@@ -2,8 +2,6 @@
 
 DAU v2 is a clean-room rewrite of the three-agent Active Inference simulation (Designer, Smartphone, User) using numpy only — no pymdp dependency. The three agents are now genuinely non-identical: different hidden state spaces, different action sets (6 / 6 / 5 policies), and different preference vectors reflecting their distinct objectives (business engagement, interface KPIs, and user well-being respectively). The core Active Inference math — β-weighted belief update, EFE decomposition into epistemic and pragmatic value, and γ-weighted policy posterior — is reimplemented from scratch in a stateless inference.py module. The main new mechanism is the empty user model: the User starts with a near-uniform policy distribution and becomes progressively more committed through two parallel processes — linear γ-annealing (precision 0.5 → 5.0) and online Dirichlet learning over the policy prior. A coupling environment mediates all cross-agent interactions, translating Designer actions into smartphone defaults and smartphone aggressiveness into user stress, with 20% stochastic transition noise throughout. Two plots are produced: an EFE timeseries (both EFE_selected and EFE_max for all three agents) and a user decisiveness chart tracking policy entropy, max(q_π), and the γ schedule over 200 timesteps.
 
-> A clean-room, numpy-only implementation of three non-identical Active Inference agents (Designer, Smartphone, User) modeling the smartphone interaction triad. Features per-agent precision weighting, an "empty user model" that becomes definite over time via γ-annealing and Dirichlet learning, and full EFE tracking.
-
 ---
 
 ## Table of Contents
