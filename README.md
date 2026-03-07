@@ -39,7 +39,7 @@ These versions represent a further step beyond the earliest prototypes, especial
 
 Even so, V2–V3 should not be interpreted as final or complete products. These are still **demonstrative prototypes**, developed to make the visual and operational dimensions of the arguments in _Design for Entropy_ easier to grasp. In that sense, the graphical dashboard serves an epistemic function: it helps make visible what the book develops at the conceptual level.
 
-### C. Example of inversion of the Beck and Ramstead (2025) model
+### C. Example of inversion of the Beck and Ramstead (2025) model https://arxiv.org/abs/2502.21217
 
 A third section of the repository presents an **example of inversion of the Beck and Ramstead (2025) model**.
 
