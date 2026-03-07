@@ -3,7 +3,7 @@
 This repository brings together a set of **software prototypes and experimental models** developed in connection with the book:
 
 **Luca M. Possati, _Design for Entropy. Active Inference and Technology_**  
-MIT Press, 2026
+Cambridge, MA: MIT Press, 2026 https://mitpress.mit.edu/9780262056267/design-for-entropy/
 
 The purpose of this repository is not to present complete, stable, or production-ready software. Rather, it provides **conceptual artifacts and elementary prototypes** designed to clarify, illustrate, and operationalize some of the book’s central arguments.
 
@@ -57,7 +57,7 @@ If you use or discuss these materials, please cite the associated book:
 
 **Luca M. Possati**  
 _Design for Entropy. Active Inference and Technology_  
-MIT Press, 2026
+Cambridge, MA: MIT Press, 2026
 
 ## Final Note
 
