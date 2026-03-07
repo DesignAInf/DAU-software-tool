@@ -1,4 +1,4 @@
-# **Designer-Artifact-User package**
+# **Designer-Artifact-User package** (basic original version)
 Multi-agent active inference with PyMDP
 
 This software package is linked to the book "Design for Entropy" (MIT Press, 2026) by Luca M. Possati. See: https://mitpress.mit.edu/9780262056267/design-for-entropy/ 
