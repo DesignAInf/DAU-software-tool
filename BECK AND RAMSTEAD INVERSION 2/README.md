@@ -37,7 +37,7 @@ The charts at the bottom are not ornamental. The most important one is I(Z;S|B) 
 
 _The connection to design_
 
-Beck and Ramstead use this algorithm to detect boundaries that already exist. We inverted it: we use the same algorithm to create boundaries. This is the central claim of your manuscript — that design is the engineering of boundaries, and that it can be formalized mathematically. The three sliders (Precision, Curiosity, Embedding) are three different ways a designer intervenes in that process.
+Beck and Ramstead use this algorithm to detect boundaries that already exist. We inverted it: we use the same algorithm to create boundaries. This is the central claim of _Design for Entropy_ — that design is the engineering of boundaries, and that it can be formalized mathematically. The three sliders (Precision, Curiosity, Embedding) are three different ways a designer intervenes in that process.
 
 ---
 
