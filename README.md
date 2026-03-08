@@ -26,7 +26,7 @@ These versions make it possible to observe:
 - the ways in which theoretical hypotheses were translated into minimal computational form
 - the gradual emergence of a logic of interaction among model, environment, and interface
 
-### B. More advanced versions with graphical dashboard (V2–V3)
+### B. More advanced versions of the DAU with graphical dashboard (V2–V3)
 
 The repository also includes later versions of the software, labeled **V2** and **V3**, characterized by greater complexity and the addition of a **graphical dashboard**.
 
