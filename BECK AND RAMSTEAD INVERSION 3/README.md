@@ -6,7 +6,7 @@ A simulation of 4000 microscopic elements self-organizing into a toroidal Markov
 
 ---
 
-##Introduction
+## Introduction
 
 We built a simulation that shows how an object emerges from nothing.
 
