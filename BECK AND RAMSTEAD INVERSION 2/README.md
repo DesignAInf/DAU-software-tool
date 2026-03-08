@@ -9,16 +9,20 @@ A simulation of 2000 microscopic elements self-organizing into a toroidal Markov
 We built a simulation that shows how an object emerges from nothing.
 
 _The starting point_
+
 Imagine 4000 dots scattered randomly in space. They don't know what they are, they don't know where they need to go. Each dot has an open question: am I inside, outside, or on the boundary of something?
 
 _What happens when you press RUN_
+
 Each dot tries to answer that question by looking around itself. As it answers, it moves toward the position that matches its answer. And by moving, the answer becomes more certain. It's a self-reinforcing cycle.
 The color you see emerging is not decorative — it's certainty. Grey means "I don't know yet what I am." Gold, blue, red means "I know."
 
 _The torus_
+
 The shape that emerges — the donut — is not drawn by hand. It is the result of a designer prior: a mathematical preference embedded in the system. The dots don't know they are supposed to form a torus, but the prior pushes them in that direction. It's like the difference between telling someone "make a donut" and giving them a recipe that, followed step by step, inevitably produces a donut.
 
 _The three roles_
+
 Each dot eventually assigns itself to one of three roles:
 
 Z internal (blue) — inside the tube
@@ -28,9 +32,11 @@ B blanket (gold) — on the surface, the boundary between inside and outside
 The blanket is what matters. It is the boundary that separates the system from its environment. In Friston's Free Energy Principle, every system that maintains its own identity has a Markov blanket — a boundary that mediates all interactions between inside and outside.
 
 _The verification_
+
 The charts at the bottom are not ornamental. The most important one is I(Z;S|B) — it measures whether the boundary actually works. If it falls toward zero, it means the inside and the outside no longer communicate directly: all communication passes through the blanket. This is exactly the mathematical definition of a boundary that works.
 
 _The connection to design_
+
 Beck and Ramstead use this algorithm to detect boundaries that already exist. We inverted it: we use the same algorithm to create boundaries. This is the central claim of your manuscript — that design is the engineering of boundaries, and that it can be formalized mathematically. The three sliders (Precision, Curiosity, Embedding) are three different ways a designer intervenes in that process.
 
 ---
