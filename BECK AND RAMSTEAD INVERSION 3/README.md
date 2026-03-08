@@ -2,7 +2,7 @@
 
 **Beck & Ramstead (2025) — arXiv:2502.21217**
 
-A simulation of 2000 microscopic elements self-organizing into a toroidal Markov blanket, driven by the inversion of the Dynamic Markov Blanket Detection (DMBD) algorithm. Color encodes assignment certainty: all elements begin grey (maximum entropy), and the toroidal shell emerges visually as `q(ω)` sharpens over iterations.
+A simulation of 4000 microscopic elements self-organizing into a toroidal Markov blanket, driven by the inversion of the Dynamic Markov Blanket Detection (DMBD) algorithm. Color encodes assignment certainty: all elements begin grey (maximum entropy), and the toroidal shell emerges visually as `q(ω)` sharpens over iterations.
 
 ---
 
