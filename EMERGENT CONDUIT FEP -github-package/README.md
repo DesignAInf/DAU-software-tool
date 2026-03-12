@@ -3,6 +3,9 @@
 ## Overview
 This repository contains the final **200-step** version of the simulation in which a designer does not start from a pre-given cable. Instead, the designer starts from a generative model over electron flow, infers dynamic role assignments for microstates, and uses **expected free energy (EFE)** to select interventions that shape an emergent **internal / boundary / external** partition. The result is a conduit-like blanket that reduces energy diffusion and eventually repays its own initial control cost.
 
+This is connected to the book: Luca M. Possati, Design for Entropy. Active Inference and Technology
+Cambridge, MA: MIT Press, 2026 https://mitpress.mit.edu/9780262056267/design-for-entropy/
+
 ## What the simulation does
 The simulation begins with a cloud of electrons moving through a longitudinal domain while external perturbations act transversely on the cloud. At each step, the code:
 
