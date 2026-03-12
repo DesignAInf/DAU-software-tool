@@ -1,0 +1,251 @@
+{
+  "case_study": "Battery designed as an active inference agent via inverse Markov blanket engineering",
+  "generative_model_factorization": "p(E,S,A,I) = p(E) p(S|E) p(I|S,A) p(A|I), with E={load, ambient, charger}, S={voltage_sensor, temperature_sensor}, A={power_gate, cooling_actuator}, I={electrochemical_core, bms_internal_model}.",
+  "conditional_independence_targets": [
+    "I \u27c2 E | (S, A)",
+    "S \u27c2 (I, A) | E",
+    "A \u27c2 (E, S) | I"
+  ],
+  "optimization": {
+    "optimizer": "gradient-based SPSA+Adam",
+    "maxiter": 4,
+    "popsize": 0,
+    "nfev": 13,
+    "nit": 4,
+    "success": true,
+    "message": "Completed fixed-budget SPSA updates."
+  },
+  "interpretation": {
+    "precision_crafting": "sensor and policy precision shaping",
+    "curiosity_sculpting": "epistemic value / controlled uncertainty",
+    "prediction_embedding": "preferences and target blanket priors",
+    "inversion": "designer sets future blanket statistics and optimizes interventions so the boundary becomes real",
+    "detector": "VBEM-like detector with ELBO monitoring and early stopping"
+  },
+  "baseline": {
+    "design": {
+      "precision_crafting": 1.1,
+      "policy_precision": 2.2,
+      "curiosity_sculpting": 0.15,
+      "prediction_embedding": 0.9,
+      "separator_strength": 0.7,
+      "control_authority": 0.8,
+      "cooling_authority": 0.8,
+      "thermal_insulation": 0.8,
+      "charge_limit": 0.9,
+      "discharge_limit": 1.0
+    },
+    "objective": -5.338591115319231,
+    "energy_score": 0.8216631660988365,
+    "longevity_score": 0.9854253484869634,
+    "blanket_score": 0.8831439666899961,
+    "service_score": 0.45606082914604607,
+    "metrics": {
+      "efficiency": 0.9906272441466449,
+      "service_score": 0.45606082914604607,
+      "viability_fraction": 0.6151515151515151,
+      "mean_temp": 26.30017496752851,
+      "max_temp": 30.124403703464797,
+      "final_health": 0.9775774592107129,
+      "final_soc": 0.172304054314617,
+      "total_delivered_energy": 367.91034225038544,
+      "total_charge_energy": 124.38629275770862,
+      "total_losses": 2.753012094760793,
+      "total_cooling_energy": 0.7279479063111158
+    },
+    "detection": {
+      "role_posteriors": {
+        "electrochemical_core": {
+          "S": 0.001066625570758866,
+          "B": 0.044922767808805976,
+          "Z": 0.9540106066204356
+        },
+        "bms_internal_model": {
+          "S": 0.00038836663340720555,
+          "B": 0.02506880199135368,
+          "Z": 0.97454283137524
+        },
+        "voltage_sensor": {
+          "S": 0.01241430325176037,
+          "B": 0.9154604985919014,
+          "Z": 0.07212519815633914
+        },
+        "temperature_sensor": {
+          "S": 0.011993801012250017,
+          "B": 0.9466094698841626,
+          "Z": 0.041396729103587396
+        },
+        "power_gate": {
+          "S": 0.21439797389099907,
+          "B": 0.595912979691991,
+          "Z": 0.18968904641701023
+        },
+        "cooling_actuator": {
+          "S": 0.03740398838070531,
+          "B": 0.9347285159618414,
+          "Z": 0.027867495657453046
+        },
+        "load_environment": {
+          "S": 0.9213695787567474,
+          "B": 0.030552292134045794,
+          "Z": 0.04807812910920678
+        },
+        "ambient_environment": {
+          "S": 0.8618275912838708,
+          "B": 0.08809744869144487,
+          "Z": 0.05007496002468434
+        },
+        "charger_environment": {
+          "S": 0.4013170850624723,
+          "B": 0.44536296182152013,
+          "Z": 0.15331995311600755
+        }
+      },
+      "inferred_roles": {
+        "electrochemical_core": "Z",
+        "bms_internal_model": "Z",
+        "voltage_sensor": "B",
+        "temperature_sensor": "B",
+        "power_gate": "B",
+        "cooling_actuator": "B",
+        "load_environment": "S",
+        "ambient_environment": "S",
+        "charger_environment": "B"
+      },
+      "blanket_nodes": [
+        "voltage_sensor",
+        "temperature_sensor",
+        "power_gate",
+        "cooling_actuator",
+        "charger_environment"
+      ],
+      "accuracy_against_target": 0.8888888888888888,
+      "blanket_clarity": 0.8388694482208567,
+      "screening_off_score": 0.9114220154492733,
+      "direct_internal_external_coupling": 0.8302303520840882,
+      "observability_score": 3.6771000000000003,
+      "controllability_score": 4.0664,
+      "final_elbo": -728.2492584380853,
+      "detector_iterations": 30
+    }
+  },
+  "optimized": {
+    "design": {
+      "precision_crafting": 2.619643624805016,
+      "policy_precision": 1.9225759084886893,
+      "curiosity_sculpting": 0.08969049084646073,
+      "prediction_embedding": 1.551497780660735,
+      "separator_strength": 1.267333710613346,
+      "control_authority": 0.7155666753694103,
+      "cooling_authority": 1.3673337106133463,
+      "thermal_insulation": 0.2,
+      "charge_limit": 0.9715223976432535,
+      "discharge_limit": 1.003421376994415
+    },
+    "objective": -5.579928463780655,
+    "energy_score": 0.90426068657553,
+    "longevity_score": 0.9861704841009956,
+    "blanket_score": 0.953798527041073,
+    "service_score": 0.41375888538685207,
+    "metrics": {
+      "efficiency": 0.9920442235257569,
+      "service_score": 0.41375888538685207,
+      "viability_fraction": 0.796969696969697,
+      "mean_temp": 26.221567279872826,
+      "max_temp": 29.007098797990626,
+      "final_health": 0.9787238216938394,
+      "final_soc": 0.30892315335862225,
+      "total_delivered_energy": 333.7848010688653,
+      "total_charge_energy": 142.5797165575262,
+      "total_losses": 1.8147858521104268,
+      "total_cooling_energy": 0.8620275437417395
+    },
+    "detection": {
+      "role_posteriors": {
+        "electrochemical_core": {
+          "S": 0.00026430340240504637,
+          "B": 0.023794843253794128,
+          "Z": 0.9759408533438003
+        },
+        "bms_internal_model": {
+          "S": 0.00011560798590446995,
+          "B": 0.01486872516833438,
+          "Z": 0.9850156668457616
+        },
+        "voltage_sensor": {
+          "S": 0.012689059015557865,
+          "B": 0.9496474004909639,
+          "Z": 0.03766354049347769
+        },
+        "temperature_sensor": {
+          "S": 0.00824760198588345,
+          "B": 0.9694683005862743,
+          "Z": 0.02228409742784261
+        },
+        "power_gate": {
+          "S": 0.1928001855789062,
+          "B": 0.7160312771864636,
+          "Z": 0.09116853723463046
+        },
+        "cooling_actuator": {
+          "S": 0.009946101318624804,
+          "B": 0.9719147457208687,
+          "Z": 0.018139152960505906
+        },
+        "load_environment": {
+          "S": 0.9845252816159159,
+          "B": 0.014327103815882852,
+          "Z": 0.0011476145682021669
+        },
+        "ambient_environment": {
+          "S": 0.9059662948284087,
+          "B": 0.06830549889582635,
+          "Z": 0.025728206275765917
+        },
+        "charger_environment": {
+          "S": 0.5588651564479786,
+          "B": 0.32474456232300014,
+          "Z": 0.11639028122902201
+        }
+      },
+      "inferred_roles": {
+        "electrochemical_core": "Z",
+        "bms_internal_model": "Z",
+        "voltage_sensor": "B",
+        "temperature_sensor": "B",
+        "power_gate": "B",
+        "cooling_actuator": "B",
+        "load_environment": "S",
+        "ambient_environment": "S",
+        "charger_environment": "S"
+      },
+      "blanket_nodes": [
+        "voltage_sensor",
+        "temperature_sensor",
+        "power_gate",
+        "cooling_actuator"
+      ],
+      "accuracy_against_target": 1.0,
+      "blanket_clarity": 0.8908194418962706,
+      "screening_off_score": 0.9369788885566848,
+      "direct_internal_external_coupling": 0.7187606209419173,
+      "observability_score": 4.225691348554611,
+      "controllability_score": 4.231910453321215,
+      "final_elbo": -66.28274905794353,
+      "detector_iterations": 30
+    }
+  },
+  "delta": {
+    "objective": -0.24133734846142474,
+    "energy_score": 0.08259752047669355,
+    "longevity_score": 0.0007451356140322218,
+    "blanket_score": 0.07065456035107698,
+    "service_score": -0.042301943759193994,
+    "screening_off_score": 0.025556873107411504,
+    "direct_internal_external_coupling": -0.11146973114217096,
+    "blanket_clarity": 0.051949993675413864,
+    "final_health": 0.0011463624831264951,
+    "max_temp": -1.117304905474171,
+    "efficiency": 0.0014169793791120044
+  }
+}

@@ -1,0 +1,27 @@
+Battery inverse Markov blanket design demo
+Generative model:
+  p(E,S,A,I) = p(E) p(S|E) p(I|S,A) p(A|I), with E={load, ambient, charger}, S={voltage_sensor, temperature_sensor}, A={power_gate, cooling_actuator}, I={electrochemical_core, bms_internal_model}.
+Conditional independencies:
+  - I ⟂ E | (S, A)
+  - S ⟂ (I, A) | E
+  - A ⟂ (E, S) | I
+
+Optimization backend:
+  gradient-based SPSA+Adam (nit=1, nfev=4, success=True)
+
+Optimized blanket nodes inferred by AIR detector:
+  - voltage_sensor
+  - temperature_sensor
+  - power_gate
+  - cooling_actuator
+
+Baseline vs optimized:
+  direct internal-external coupling: 0.830 -> 0.874
+  blanket score: 0.883 -> 0.938
+  blanket clarity: 0.839 -> 0.845
+  screening-off score: 0.911 -> 0.922
+  detector ELBO: -728.249 -> -498.139
+  detector iterations: 30 -> 30
+  efficiency: 0.991 -> 0.991
+  final health: 0.97758 -> 0.97750
+  max temperature: 30.12C -> 29.53C
