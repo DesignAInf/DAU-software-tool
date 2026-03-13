@@ -3,6 +3,8 @@
 **Active Inference Markov blanket for Joule heat reduction in conductors**
 Version 6.0 — closed-loop EFE minimization
 
+A computational simulation showing that electrons organized as an Active Inference Markov blanket — where role assignment minimizes Expected Free Energy — dissipate 44% less internal heat than electrons using the same physical cancellation mechanism but with roles assigned by heuristic rules.
+
 ---
 
 ## What this project demonstrates
