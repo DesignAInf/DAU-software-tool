@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=65", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "dmbd_joule"
+version = "5.0.0"
+description = "Active Inference Markov blanket for Joule heat reduction in conductors"
+authors = [{name = "Luca Maria Possati"}]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.7",
+]
+
+[project.scripts]
+dmbd_joule = "dmbd_joule.__main__:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+# Prevent pytest from descending into results/ or docs/
+norecursedirs = ["results", "docs", "*.egg-info", "dist", "build", ".git"]
