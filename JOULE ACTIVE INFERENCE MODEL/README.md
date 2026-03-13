@@ -321,6 +321,4 @@ MIT License. See LICENSE file.
 
 ## Author
 
-**Luca Maria Possati**
-Researcher in philosophy of technology, Active Inference, and computational
-modeling of physical systems.
+**LM Possati**
