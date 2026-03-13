@@ -1,4 +1,4 @@
-# DMBD Joule
+# Dynamic Markov Blanket Dynamics for Joule Heat Reduction
 
 **Active Inference Markov blanket for Joule heat reduction in conductors**
 Version 6.0 — closed-loop EFE minimization
