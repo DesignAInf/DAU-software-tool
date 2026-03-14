@@ -1,4 +1,4 @@
-# Dynamic Markov Blanket Dynamics for Joule Heat Reduction
+# Dynamic Markov Blanket Design for Joule Heat Reduction
 
 **Active Inference Markov blanket for Joule heat reduction in conductors**
 Version 6.0 — closed-loop EFE minimization
