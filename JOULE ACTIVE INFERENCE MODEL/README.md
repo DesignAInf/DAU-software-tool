@@ -154,7 +154,7 @@ controller alone. See Limitations.
 ## Installation
 
 ```bash
-git clone https://github.com/yourname/dmbd_joule.git
+git clone https://github.com/dmbd_joule.git
 cd dmbd_joule
 pip install -r requirements.txt
 
