@@ -4,8 +4,11 @@
 This repository contains a 200-step simulation. In it, a designer doesn't begin with a ready-made cable — instead, they build one from scratch using a principled process:
 
 -Start with a model of electron flow. Rather than assuming a fixed structure, the designer works from a probabilistic model of how electrons move through a material.
+
 -Dynamically assign roles to microstates. As the simulation runs, individual microstates (tiny regions of the material) are continuously classified as internal, boundary, or external — forming what's called a Markov blanket.
+
 -Choose interventions intelligently. The designer uses a quantity called expected free energy (EFE) to decide which interventions will most effectively guide the system toward a useful structure. EFE balances exploration (trying new things) with exploitation (reinforcing what works).
+
 -Watch a cable-like structure emerge. Over time, the boundary microstates self-organize into a conduit — a channel that concentrates and directs electron flow rather than letting energy scatter.
 
 The structure pays for itself. The energy cost of the initial interventions is eventually offset by the reduction in energy diffusion the emergent structure provides.
