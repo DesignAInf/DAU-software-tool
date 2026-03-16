@@ -3,7 +3,9 @@
 **Active Inference Markov blanket for Joule heat reduction in conductors**
 Version 6.0 — closed-loop EFE minimization
 
-A computational simulation showing that electrons organized as an Active Inference Markov blanket — where role assignment minimizes Expected Free Energy — dissipate 44% less internal heat than electrons using the same physical cancellation mechanism but with roles assigned by heuristic rules.
+A computational simulation showing that electrons organized as an Active Inference Markov blanket — where role assignment minimizes Expected Free Energy — dissipate about 30% less internal heat than electrons using the same physical cancellation mechanism but with roles assigned by heuristic rules.
+
+A caveat is necessary. Rather than a realistic account of electron transport, it is more accurate to frame this simulation as a conceptual design study that uses the formal language of active inference to explore how adaptive systems might be organized. On that reading, the value of the work does not lie in the literal claim that electrons can be partitioned into sensory, active, and internal roles, but in showing how a Markov blanket architecture, variational updating, and Expected Free Energy minimization can be translated into a design framework for systems that dynamically allocate sensing, actuation, and protection in order to balance performance, uncertainty, and energy dissipation. This is a proof of concept for active-inference-driven design: not a faithful microphysical theory of a wire, but a generative framework for thinking about how engineered systems could reorganize themselves to maintain function under noise, disturbance, and thermodynamic cost.
 
 ---
 
