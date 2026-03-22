@@ -233,28 +233,22 @@ No other dependencies. The simulation engine (`dau_v2/`) uses only `numpy` — n
 
 ## Installation and Usage
 
-**1. Clone the repository**
-```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
-```
-
-**2. Install dependencies**
+**1. Install dependencies**
 ```bash
 pip install numpy matplotlib flask
 ```
 
-**3. Start the server**
+**2. Start the server**
 ```bash
 cd dau_project
 python3 server.py
 ```
 
-**4. Open the dashboard**
+**3. Open the dashboard**
 
 Navigate to `http://127.0.0.1:5000` in your browser.
 
-**5. Run the simulation**
+**4. Run the simulation**
 
 Adjust the sliders and press **Run Simulation**. Results appear within a few seconds.
 
