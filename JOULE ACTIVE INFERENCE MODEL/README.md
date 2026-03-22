@@ -311,8 +311,7 @@ effective, not definitionally circular.
 
 ```
 Possati, L.M. (2025). DMBD Joule: Active Inference Markov blanket for
-Joule heat reduction in conductors. GitHub.
-https://github.com/yourname/dmbd_joule
+Joule heat reduction in conductors.
 ```
 
 ---
