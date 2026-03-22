@@ -330,6 +330,7 @@ Five tests run automatically:
 ## Citation
 
 If you use this simulation in your research, please cite accordingly and link back to this repository.
+Author: Luca M. Possati
 
 ---
 
