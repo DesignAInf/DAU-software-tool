@@ -33,6 +33,8 @@ Six sliders allow real-time configuration of the simulation before each run:
 - **User Final Commitment (γ)** — the endpoint of the User's precision annealing schedule
 
 ### Live Results Visualization
+Charts are drawn in the browser from JSON returned by the Flask API (HTML canvas), not from static image files. Former placeholder screenshots (`dashboard_interface*.png`) were removed; optional matplotlib exports of the same metrics are available via `python generate_reference_plots.py` in `dau_project/` (see `README.md` in this folder).
+
 After each run, the dashboard updates with:
 
 - **Decision Quality over Time** — Expected Free Energy (EFE) trajectories for all three agents, showing how well each agent's chosen actions aligned with its goals at every timestep

@@ -1,0 +1,3 @@
+# DAU v2 standalone simulation (CLI) and static plots
+numpy>=1.22
+matplotlib>=3.7

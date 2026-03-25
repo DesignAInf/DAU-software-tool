@@ -8,17 +8,19 @@ Endpoints:
   POST /analysis   — batch run (n_seeds), returns aggregated stats
 """
 
-import os, sys, json
+import os
+import sys
+
 import numpy as np
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-from dau_v3.main     import run
-from dau_v3.analysis import run_batch, compute_scalars
-from dau_v3          import config as cfg
+from dau_v3 import config as cfg
+from dau_v3.analysis import compute_scalars, run_batch
+from dau_v3.main import run
 
 app = Flask(__name__, static_folder=HERE)
 

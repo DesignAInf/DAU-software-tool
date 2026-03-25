@@ -1,0 +1,4 @@
+# JavaScript / Node prototype — no Python packages.
+# From this folder:
+#   npm install
+#   npm run dev

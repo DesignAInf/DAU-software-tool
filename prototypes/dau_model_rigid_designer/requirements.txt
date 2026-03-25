@@ -1,0 +1,4 @@
+# Rigid-designer DAU demo (pymdp-based)
+numpy>=1.22
+matplotlib>=3.7
+inferactively-pymdp

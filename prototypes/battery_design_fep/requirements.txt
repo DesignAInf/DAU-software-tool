@@ -1,0 +1,5 @@
+# Inverse Markov blanket battery demo (single script)
+numpy>=1.22
+scipy>=1.9
+matplotlib>=3.7
+joblib>=1.2
