@@ -1,16 +1,21 @@
 """
 server.py — Flask backend for the DAU v2 dashboard.
 """
-import os, sys, json
+
+from __future__ import annotations
+
+import os
+import sys
+
 import numpy as np
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-from dau_v2.main   import run
-from dau_v2        import config as cfg
+from dau_v2 import config as cfg
+from dau_v2.main import run
 
 app = Flask(__name__, static_folder=HERE)
 

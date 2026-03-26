@@ -1,0 +1,3 @@
+# Optional dev tooling for the whole repository (not required to run prototypes).
+# Each prototype under prototypes/<name>/ has its own requirements.txt where needed.
+ruff>=0.4

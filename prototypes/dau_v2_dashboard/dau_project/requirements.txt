@@ -1,0 +1,4 @@
+# DAU v2 dashboard — Flask API + simulation + optional matplotlib exports
+flask>=2.3
+numpy>=1.22
+matplotlib>=3.7

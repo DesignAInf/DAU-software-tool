@@ -1,5 +1,16 @@
 # DAU v3 — Active Inference Persuasive Design Study
 
+## How to run
+
+```bash
+pip install -r requirements.txt
+python server_v3.py
+```
+
+Then open `http://127.0.0.1:5000` in your browser. CLI: `python -m dau_v3.main --steps 300 --seed 0` and `python -m dau_v3.analysis --steps 300 --n_seeds 20`.
+
+---
+
 An extended Active Inference simulation studying how **Designer and Smartphone strategies differentially manipulate users with different psychological profiles**. Four user archetypes run in parallel under shared environmental conditions, revealing which persuasive techniques are most effective on which profiles. Built on the same numpy-only Active Inference core as DAU v2, extended to 10 hidden states per agent, richer observation spaces, and a full statistical analysis pipeline.
 
 **DAU v3 — Model Description**

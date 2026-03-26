@@ -1,0 +1,4 @@
+# DAU v3 dashboard — Flask + simulation + analysis plots
+flask>=2.3
+numpy>=1.22
+matplotlib>=3.7
